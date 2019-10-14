@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public bool playersTurn = true;
 
     private List<Survivor> survivors;
+    private List<Enemy> enemies;
 
 
     void Awake()
@@ -28,6 +29,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         survivors = new List<Survivor>();
+        enemies = new List<Enemy>();
     }
 
     private void Update()
@@ -38,19 +40,18 @@ public class GameManager : MonoBehaviour
             if (Input.GetKeyDown("e"))
             {
                 Debug.Log("enemys turn");
-                playersTurn = false;
+                StartEnemyTurn();
             }
 
 
         }else
         {
             //enemys turn
+            Debug.Log("players turn");
+            StartPlayersTurn();
 
-            if (Input.GetKeyDown("q"))
-            {
-                Debug.Log("players turn");
-                StartPlayersTurn();
-            }
+            
+
 
         }
     }
@@ -65,8 +66,26 @@ public class GameManager : MonoBehaviour
         playersTurn = true;
     }
 
+    private void StartEnemyTurn()
+    {
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            enemies[i].ResetEnergy();
+            enemies[i].Move();
+
+        }
+        playersTurn = false;
+
+
+    }
+
     public void AddSurvivor(Survivor survivor)
     {
         survivors.Add(survivor);
+    }
+
+    public void AddEnemy(Enemy enemy)
+    {
+        enemies.Add(enemy);
     }
 }
