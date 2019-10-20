@@ -66,6 +66,5 @@ public class Survivor : MonoBehaviour
     public void SetActive(bool b)
     {
         active = b;
-        Debug.Log("active changed to:" + active);
     }
 }

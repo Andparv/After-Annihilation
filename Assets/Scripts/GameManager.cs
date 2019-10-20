@@ -109,9 +109,10 @@ public class GameManager : MonoBehaviour
         survivors.Add(survivor);
         charButton = Instantiate(charButtonPrefab, characterUI.transform);
         Button btn = charButton.GetComponentInChildren<Button>();
-        btn.onClick.AddListener(() => SelectCharacter(survivor));
+        int addedPos = survivors.Count-1;
+        btn.onClick.AddListener(() => SelectCharacter(survivor, addedPos));
         
-        charButton.transform.position = new Vector3(30, survivors.Count *  70, 0);
+        charButton.transform.position = new Vector3(20, (survivors.Count+ 1) *  70, 0);
     }
 
     public void AddEnemy(Enemy enemy)
@@ -135,10 +136,11 @@ public class GameManager : MonoBehaviour
         
     }
 
-    public void SelectCharacter(Survivor survivor)
+    public void SelectCharacter(Survivor survivor,int position)
     {
-        Debug.Log("button clicked ");
         survivors[currentlyActive].SetActive(false);
         survivor.SetActive(true);
+        currentlyActive = position;
+
     }
 }
