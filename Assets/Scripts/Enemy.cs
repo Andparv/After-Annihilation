@@ -30,14 +30,14 @@ public class Enemy : MonoBehaviour
             return;
         }
 
-        int xMovement = Random.Range(-1, 1);
-        int yMovement = Random.Range(-1, 1);
+        int xMovement = Random.Range(-1, 2);
+        int yMovement = Random.Range(-1, 2);
         Debug.Log("x move: " + xMovement);
         Debug.Log("y move: " + yMovement);
         Vector3Int cellCoords = gridLayout.WorldToCell(new Vector3(transform.position.x + xMovement, transform.position.y + yMovement, 0));
         if (Mathf.Abs(cellCoords.y) % 2 == 1) //cells with odd y coord
         {
-            transform.position = new Vector3(1.2f * cellCoords.x + 0.5f, cellCoords.y, 0);
+            transform.position = new Vector3(1.2f * cellCoords.x + 0.6f, cellCoords.y, 0);
         }
         else
         {

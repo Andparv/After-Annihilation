@@ -44,3 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playersTurn: 1
+  survivor: {fileID: 1915632452181764050, guid: d35b8999796100b4ab834a90e8a71f35,
+    type: 3}
+  charButtonPrefab: {fileID: 6638167376014503313, guid: 3130a5e6dd795794fba601c430d1c4fe,
+    type: 3}

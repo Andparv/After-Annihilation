@@ -1,18 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Survivor : MonoBehaviour
 {
 
-    public GridLayout gridLayout;
+    private GridLayout gridLayout;
     public int maxEnergy = 3;
     public int energy;
+    public bool active;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         energy = maxEnergy;
-        GameManager.instance.AddSurvivor(this);
+        gridLayout = GameObject.FindWithTag("grid").GetComponent<GridLayout>();
+        active = false;
     }
 
     // Update is called once per frame
@@ -24,7 +27,11 @@ public class Survivor : MonoBehaviour
             return;
         }
 
-        
+        if (!active)
+        {
+            return;
+        }
+
         if (Input.GetMouseButtonDown(0) && energy>0)
         {
             //get the cell coord where you click
@@ -34,11 +41,11 @@ public class Survivor : MonoBehaviour
             
             if (Mathf.Abs(cellCoords.y) % 2 == 1) //cells with odd y coord
             {
-                transform.position = new Vector3(1.2f * cellCoords.x + 0.5f, cellCoords.y, 0);
+                transform.position = new Vector3(1.2f * cellCoords.x + 0.6f, cellCoords.y + Mathf.Abs(cellCoords.y * 0.05f), 0);
             }
             else
             {
-                transform.position = new Vector3(1.2f * cellCoords.x, cellCoords.y, 0);
+                transform.position = new Vector3(1.2f * cellCoords.x, cellCoords.y + Mathf.Abs(cellCoords.y * 0.05f), 0);
             }
 
             //Debug.Log("mousepos: " + mousePos);
@@ -54,5 +61,11 @@ public class Survivor : MonoBehaviour
     public void ResetEnergy()
     {
         energy = maxEnergy;
+    }
+
+    public void SetActive(bool b)
+    {
+        active = b;
+        Debug.Log("active changed to:" + active);
     }
 }
