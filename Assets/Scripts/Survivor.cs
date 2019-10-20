@@ -10,6 +10,7 @@ public class Survivor : MonoBehaviour
     public int maxEnergy = 3;
     public int energy;
     public bool active;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -32,8 +33,9 @@ public class Survivor : MonoBehaviour
             return;
         }
 
-        if (Input.GetMouseButtonDown(0) && energy>0)
+        if (Input.GetMouseButtonDown(0) && energy>0 && !EventSystem.current.IsPointerOverGameObject())
         {
+
             //get the cell coord where you click
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3Int cellCoords = gridLayout.WorldToCell(mousePos);

@@ -37,11 +37,11 @@ public class Enemy : MonoBehaviour
         Vector3Int cellCoords = gridLayout.WorldToCell(new Vector3(transform.position.x + xMovement, transform.position.y + yMovement, 0));
         if (Mathf.Abs(cellCoords.y) % 2 == 1) //cells with odd y coord
         {
-            transform.position = new Vector3(1.2f * cellCoords.x + 0.6f, cellCoords.y, 0);
+            transform.position = new Vector3(1.2f * cellCoords.x + 0.6f, cellCoords.y + Mathf.Abs(cellCoords.y * 0.05f), 0);
         }
         else
         {
-            transform.position = new Vector3(1.2f * cellCoords.x, cellCoords.y, 0);
+            transform.position = new Vector3(1.2f * cellCoords.x, cellCoords.y + Mathf.Abs(cellCoords.y * 0.05f), 0);
         }
         energy -= 1;
     }
