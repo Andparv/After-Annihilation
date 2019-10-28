@@ -11,8 +11,10 @@ public class GameManager : MonoBehaviour
     public bool playersTurn;
     private int currentlyActive;
     private bool clickingOnUI;
+    private int spawnTurn;
 
     public GameObject survivor;
+    public GameObject enemy;
     private List<Survivor> survivors;
     private List<Enemy> enemies;
 
@@ -48,6 +50,7 @@ public class GameManager : MonoBehaviour
         currentlyActive = 0;
         SpawnCharater(survivor, "survivor", new Vector3(0, 0, 0));
         playersTurn = true;
+        spawnTurn = 0;
     }
 
     private void Update()
@@ -59,17 +62,9 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log("enemys turn");
                 playersTurn = false;
+                StartEnemyTurn();
+                Debug.Log("players turn");
             }
-
-        }else
-        {
-            //enemys turn
-            StartEnemyTurn();
-            Debug.Log("players turn");
-            StartPlayersTurn();
-
-            
-
 
         }
     }
@@ -77,10 +72,11 @@ public class GameManager : MonoBehaviour
     private void StartPlayersTurn()
     {
         //restore energy of all survivors
+        Debug.Log(GetSurvivorsLocations()[0]);
+        Debug.Log(GetSurvivorsLocations()[1]);
         for (int i = 0; i < survivors.Count; i++)
         {
             survivors[i].ResetEnergy();
-            Debug.Log("survivor" + i + ": Energy(" + survivors[i].energy + "), survivorAct1ve(" + survivors[i].active + ")");
         }
 
         playersTurn = true;
@@ -88,6 +84,20 @@ public class GameManager : MonoBehaviour
 
     private void StartEnemyTurn()
     {
+        if (enemies.Count < 5)
+        {
+            if (spawnTurn == 0)
+            {
+                SpawnCharater(enemy, "enemy", new Vector3(-6, 2.2f, 0));
+                spawnTurn = 3;
+            }
+            else
+            {
+                spawnTurn -= 1;
+            }
+            
+        }
+
         for (int i = 0; i < enemies.Count; i++)
         {
             enemies[i].ResetEnergy();
@@ -96,13 +106,9 @@ public class GameManager : MonoBehaviour
         }
 
 
+        StartPlayersTurn();
     }
 
-    public void OnPointerClick(PointerEventData pointerEventData)
-    {
-        //Output to console the clicked GameObject's name and the following message. You can replace this with your own actions for when clicking the GameObject.
-        Debug.Log(name + " Game Object Clicked!");
-    }
     //adding characters to list
     public void AddSurvivor(Survivor survivor)
     {
@@ -139,8 +145,33 @@ public class GameManager : MonoBehaviour
     public void SelectCharacter(Survivor survivor,int position)
     {
         survivors[currentlyActive].SetActive(false);
+        SpriteRenderer currentlyActiveSRenderer = survivors[currentlyActive].GetComponentsInChildren<SpriteRenderer>()[1];
+        currentlyActiveSRenderer.color = new Color(1, 1, 1, 0);
+
         survivor.SetActive(true);
+        SpriteRenderer newActiveSRenderer = survivor.GetComponentsInChildren<SpriteRenderer>()[1];
+        newActiveSRenderer.color = new Color(1, 1, 1, 1);
+
         currentlyActive = position;
 
+    }
+    public List<Vector3Int> GetSurvivorsLocations()
+    {
+        List<Vector3Int> survivorsLocations = new List<Vector3Int>();
+        foreach (Survivor s in survivors)
+        {
+            survivorsLocations.Add(s.pos);
+        }
+        return survivorsLocations;
+    }
+
+    public List<Vector3Int> GetEnemiesLocations()
+    {
+        List<Vector3Int> enemiesLocations = new List<Vector3Int>();
+        foreach (Enemy e in enemies)
+        {
+            enemiesLocations.Add(e.pos);
+        }
+        return enemiesLocations;
     }
 }

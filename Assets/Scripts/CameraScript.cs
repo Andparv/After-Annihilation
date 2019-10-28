@@ -7,9 +7,9 @@ public class CameraScript : MonoBehaviour
 
     Vector3 lastDragPosition;
 
-    float minFov = 15f;
-    float maxFov = 90f;
-    float sensitivity = 10f;
+    float minSize = 1f;
+    float maxSize = 5f;
+    float sensitivity = 2f;
 
     void Update()
     {
@@ -22,9 +22,9 @@ public class CameraScript : MonoBehaviour
             lastDragPosition = Input.mousePosition;
         }
 
-        float fov = Camera.main.fieldOfView;
-        fov += Input.GetAxis("Mouse ScrollWheel") * sensitivity;
-        fov = Mathf.Clamp(fov, minFov, maxFov);
-        Camera.main.fieldOfView = fov;
+        float size = Camera.main.orthographicSize;
+        size += Input.GetAxis("Mouse ScrollWheel") * sensitivity;
+        size = Mathf.Clamp(size, minSize, maxSize);
+        Camera.main.orthographicSize = size;
     }
 }
