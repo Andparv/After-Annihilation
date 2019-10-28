@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     public GameObject enemy;
     private List<Survivor> survivors;
     private List<Enemy> enemies;
-
+    private bool isFound;
     public GameObject charButtonPrefab;
     private GameObject charButton;
     private GameObject characterUI;
@@ -44,11 +44,11 @@ public class GameManager : MonoBehaviour
     {
         survivors = new List<Survivor>();
         enemies = new List<Enemy>();
-
+        isFound = true;
         characterUI = GameObject.FindWithTag("CharacterUI");
-        SpawnCharater(survivor,"survivor", new Vector3(0, 0, 0));
+        SpawnCharacter(survivor,"survivor", new Vector3(0, 0, 0));
         currentlyActive = 0;
-        SpawnCharater(survivor, "survivor", new Vector3(0, 0, 0));
+        SpawnCharacter(survivor, "survivor", new Vector3(0, 0, 0));
         playersTurn = true;
         spawnTurn = 0;
     }
@@ -71,9 +71,14 @@ public class GameManager : MonoBehaviour
 
     private void StartPlayersTurn()
     {
-        //restore energy of all survivors
-        Debug.Log(GetSurvivorsLocations()[0]);
-        Debug.Log(GetSurvivorsLocations()[1]);
+
+        Vector3Int newAllyTile = new Vector3Int(2, 2, 0);
+        if (GameManager.instance.GetSurvivorsLocations().Contains(newAllyTile) && isFound)
+        {
+            isFound = false;
+            SpawnCharacter(survivor, "survivor", new Vector3(2, 2, 0));
+        }
+
         for (int i = 0; i < survivors.Count; i++)
         {
             survivors[i].ResetEnergy();
@@ -88,7 +93,7 @@ public class GameManager : MonoBehaviour
         {
             if (spawnTurn == 0)
             {
-                SpawnCharater(enemy, "enemy", new Vector3(-6, 2.2f, 0));
+                SpawnCharacter(enemy, "enemy", new Vector3(-6, 2.2f, 0));
                 spawnTurn = 3;
             }
             else
@@ -127,7 +132,7 @@ public class GameManager : MonoBehaviour
     }
 
     //spawning characters
-    public void SpawnCharater(GameObject c, string type, Vector3 location)
+    public void SpawnCharacter(GameObject c, string type, Vector3 location)
     {
         if (type == "survivor")
         {
